@@ -26,9 +26,11 @@ if [ `docker images $cd_image | wc -l` -lt 2 ]; then
   fi
 fi
 
-docker run --privileged=true -ti -d -p 8888:8888 -p 80:80 -p 7180:7180 --name $containerName --hostname=quickstart.cloudera -v $(pwd)/mnt:/mnt $cd_image /usr/bin/docker-quickstart
+docker run --privileged=true -ti -d -p 8888:8888 -p 80:80 -p 7180:7180 --name $containerName --hostname=quickstart.cloudera -v $(pwd):/mnt $cd_image /bin/bash
+
+docker exec -ti -d $containerName chmod u+x /mnt/stip-ng/init/main-init.sh
+docker exec -ti $containerName /mnt/stip-ng/init/main-init.sh
+
 
 #docker exec -ti -d $containerName /home/cloudera/cloudera-manager --express
 #docker exec -ti $containerName /home/cloudera/kerberos
-
-docker attach $containerName
